@@ -24,7 +24,7 @@
 % Dane magistrantów:
 \autor{Daniel Gutowski}{372207}
 \autori{Jakub Kuklis}{??}
-\autorii{Adrian Naruszko}{??}
+\autorii{Adrian Naruszko}{371233}
 \autoriii{Filip Plata}{??}
 %\autoriv{Autor nr Cztery}{432145}
 %\autorv{Autor nr Pięć}{342011}
@@ -140,6 +140,8 @@ Zajmowaliśmy się implementacją dwóch mikroserwisów:
 	Posiadającą funkcję generowania klas Javy na podstawie bazy danych
 \item Spring jest frameworkiem do tworzenia aplikacji Javowych
 \item Redis ??TODO
+\item Elastic Stack - Logstash, Metricbeat, ElasticSearch i Kibana użyte do monitorowania aplikacji
+\item Gatling - framework do tworzenia i wykonywania scenariuszy testów wdajnościowych
 \end{enumerate}
 
 \section{Założenia aplikacji}
@@ -162,6 +164,10 @@ z generacją klas na podstawie aktualnego stanu bazy danych, wydzielając
 jednak warstwę zależną od Jooq od reszty kodu, który nie zależy od sposobu
 dostępu do bazy danych.
 
+Do monitorowania aktywnych instancji aplikacji użyliśmy gotowego, dedykowanego narzędzia 
+spring-boot-admin. Niestety okazało się że konfiguracja jest równie łatwa co ograniczona i 
+nie spełnia wymogów postawionych przez klienta.
+
 \section{Iteracja 2}
 Do realizacji zatem przyjęliśmy architekturę z kilkoma
 warstwami pośredniczącymi, każda wykonuje oddzielne zadania.
@@ -181,9 +187,16 @@ wydzielonym wspólnym kodem - czyli zdecydowana większość.
 
 \begin{Huge}
 Tu bym dopisał coś o strukturze kodu.
-Trzeba napisać coś o cache'u, testach i apce do nadzorowania.
+Trzeba napisać coś o cache'u.
 \end{Huge}
 
+Tym razem do monitorowania instancji aplikacji skorzystaliśmy z Elastic Stacka, który co prawda wymaga 
+ręcznego wprowadzenia zasad dla wymaganych statystyk, ale w zamian daje możliwość niemalże dowolnej ich
+konfiguracji.
+
+Kolejnym wymaganiem klienta było przeprowadzenie testów wydajnościowych 
+zaproponowanego rozwiązania. W tym celu napisaliśmy scenariusze korzystając 
+z frameworku Gatling napisanego w Scali. 
 
 \if{false}
 Pojęciem pierwotnym blabalii fetorycznej jest \emph{blaba}.
