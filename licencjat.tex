@@ -16,6 +16,7 @@
 % dodaj opcję [en] dla wersji angielskiej (mogą być obie: [licencjacka,en])
 \documentclass[licencjacka]{pracamgr}
 
+\usepackage{graphicx,xcolor}
 
 % Dane magistranta:
 %\autor{Imię Nazwisko}{123456}
@@ -23,11 +24,9 @@
 
 % Dane magistrantów:
 \autor{Daniel Gutowski}{372207}
-\autori{Jakub Kuklis}{??}
+\autori{Jakub Kuklis}{371125}
 \autorii{Adrian Naruszko}{371233}
-\autoriii{Filip Plata}{??}
-%\autoriv{Autor nr Cztery}{432145}
-%\autorv{Autor nr Pięć}{342011}
+\autoriii{Filip Plata}{371335}
 
 \title{????}
 
@@ -128,12 +127,33 @@ Zajmowaliśmy się implementacją dwóch mikroserwisów:
 \end{enumerate}
 
 
-\chapter{Opis bieżącej architektury}
-
-??TODO
+\chapter{Opis modernizacji architektury}
 
 
-\chapter{Implementacja elementu integrującego}
+\section{Dotychczasowy monolit}
+Do tej pory jedna aplikacja(a.k.a. ACN) obsługiwała zapytania HTTP od momentu pojawienia się do końcowego serwowania strony WWW.
+Taka struktura powoduje skomplikowanie kodu, utrudnia wprowadzanie zmian a w przypadku awarii serwisu komplikuje lokalizację błędu.
+
+\begin{figure}\label{architektura}
+	\centering
+	\includegraphics[scale=0.82]{architecture.pdf}
+	\caption{Schemat wydzielonych aplikacji}
+\end{figure}
+
+\section{Nowa architektura}
+Rozwiązanie zaproponowane przez firmę i wdrażane przez nas to rozdzielenie czynności wykonywanych w ACN na kilka mikroserwisów RESTowych.
+Jak widać na rysunku \ref{architektura} wydzielone zostały następujące aplikacje:
+\begin{itemize}
+\item Frontend - przyjmowanie zapytań i serwowanie stron WWW
+\item Rendering - tworzenie stron na podstawie szablonów, wykorzystuje usługi udostępniane przez registry
+\item AcDataAPI - abstrakcja bazy danych, udostępnia tylko niezbędne renderingowi dane
+\item Registry - rejestr usług tj. podmiana tagów, personalizacja treści itp.
+\item ACN - dotychczasowa aplikacja implementująca niektóre usługi, w końcowym etapie ma zniknąć
+\end{itemize}
+W tej pracy opisujemy naszą pracę nad renderingiem i dataAPI.
+
+
+\chapter{Implementacja elementu integrującego z bazą danych}
 
 
 \section{Użyte technologie}
@@ -207,6 +227,9 @@ konfiguracji.
 Kolejnym wymaganiem klienta było przeprowadzenie testów wydajnościowych 
 zaproponowanego rozwiązania. W tym celu napisaliśmy scenariusze korzystając 
 z frameworku Gatling napisanego w Scali. 
+
+
+
 
 
 
